@@ -45,7 +45,7 @@ class HttpAdapter implements DataAdapter {
       print("---- Dio [Response][SourceKey:${options.sourceKey}]: ${response.data[options.sourceKey]}");
       return response.data[options.sourceKey];
     }
-    print("---- Dio [Response]: ${response.data[options.sourceKey]}");
+    print("---- Dio [Response]: ${response.data}");
     return response.data;
   }
 
