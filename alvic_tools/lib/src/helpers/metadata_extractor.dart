@@ -31,7 +31,9 @@ class MedatadaExtractor {
   static String cleanModelName(String name) => 
     name.toString().replaceAll("Future", "")
         .replaceAll("List", "")
-        .replaceAll("<", "").replaceAll(">", "");
+        .replaceAll("<", "")
+        .replaceAll(">", "")
+        .replaceAll("?", "");
 
   static String getUrlByType(MethodElement element) {
     var type = getMethodType(element);

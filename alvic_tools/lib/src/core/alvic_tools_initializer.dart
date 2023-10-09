@@ -1,4 +1,5 @@
 
+import 'package:alvic_tools/src/core/adapters/local_storage_adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:alvic_tools/alvic_tools.dart';
@@ -15,18 +16,22 @@ class AlvicToolsInitializer {
   });
 
   void init() async {
-    print("initializing....");
+    print("alvic tools initializing....");
+    await initLocalStorage();
     GetIt.instance.registerSingleton<Dio>(Dio());
     GetIt.instance.registerSingleton<AlvicToolsConfig>(config);
+    GetIt.instance.registerSingleton<AlvicContainer>(AlvicContainer(
+      content: {}
+    ));
     config.initConfig(GetIt.I.get<Dio>());
     GetIt.instance.registerSingleton<HttpAdapter>(HttpAdapter());
+    GetIt.instance.registerSingleton<LocalStorageAdapter>(LocalStorageAdapter());
     if (config.injector?.inject != null) {
       config.injector?.inject!(GetIt.I);
     }
   }
 
-  void initHive() async {
-     final appDocumentDirectory = await getApplicationDocumentsDirectory();
-    Hive.initFlutter(appDocumentDirectory.path);
+  initLocalStorage() async {
+    Hive.initFlutter();
   }
 }

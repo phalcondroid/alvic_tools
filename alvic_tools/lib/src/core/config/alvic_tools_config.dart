@@ -31,6 +31,8 @@ class AlvicToolsConfig {
         if (interceptor?.before != null) {
           return handler.next(interceptor?.before!(options, handler) ?? options);
         }
+        options.data = <String, dynamic>{};
+        options.headers = <String, dynamic>{};
         return handler.next(options);
       },
       onResponse: (Response response, ResponseInterceptorHandler handler) {

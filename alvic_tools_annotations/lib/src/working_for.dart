@@ -1,0 +1,3 @@
+class WorkingFor {
+  const WorkingFor();
+}

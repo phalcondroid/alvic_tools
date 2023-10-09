@@ -1,5 +1,10 @@
 class Post {
-  const Post();
-}
 
-const post = Post();
+  final String path;
+  final String headers;
+
+  const Post({
+    this.path = "",
+    this.headers = ""
+  });
+}

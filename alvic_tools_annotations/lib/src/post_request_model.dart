@@ -1,0 +1,3 @@
+class PostRequestModel {
+  const PostRequestModel();
+}

@@ -1,11 +1,11 @@
 class Get {
   final String path;
   final bool cached;
-  final String sourceKey;
+  final List<String>? headers;
 
   const Get({
     this.path = "",
-    this.sourceKey = "",
-    this.cached = false
+    this.cached = false,
+    this.headers,
   });  
 }

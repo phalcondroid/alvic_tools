@@ -1,13 +1,13 @@
 import 'package:alvic_tools/src/core/adapters/data_options.dart';
 
-class HttpGetOptions extends DataOptions {
+class HttpOptions extends DataOptions {
   final String paths;
   final Map<String, dynamic> queries;
-  final String sourceKey;
+  final Map<String, dynamic> headers;
 
-  const HttpGetOptions({
+  const HttpOptions({
     this.paths = "",
     this.queries = const {},
-    this.sourceKey = ""
+    this.headers = const {}
   });
 }

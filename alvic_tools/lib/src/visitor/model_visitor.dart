@@ -33,7 +33,12 @@ class ModelVisitor extends SimpleElementVisitor<void> {
     methods[element.name]!["url"] += MedatadaExtractor.getUrlByType(element);
     if (element.metadata.first.toString().contains("@Get")) {
       methods[element.name]?.addAll({
-        "sourceKey": MedatadaExtractor.getFromElement(element, Get, 'sourceKey'),
+        "headers": MedatadaExtractor.getFromElement(element, Get, 'headers'),
+      });
+    }
+    if (element.metadata.first.toString().contains("@Post")) {
+      methods[element.name]?.addAll({
+        "headers": MedatadaExtractor.getFromElement(element, Post, 'headers'),
       });
     }
     
@@ -44,17 +49,40 @@ class ModelVisitor extends SimpleElementVisitor<void> {
       };
       
       if (element.metadata.first.toString().contains("@Get")) {
-        if (paramElement.metadata.first.toString().contains("@Path")) {
-          if (!params[paramElement.name]!.containsKey("path")) {
-            params[paramElement.name]?.addAll({ "path": "path" });
+        if (paramElement.metadata.first.toString().contains("@Where")) {
+          if (!params[paramElement.name]!.containsKey("where")) {
+            params[paramElement.name]?.addAll({ "where": {} });
           }
+          params[paramElement.name]?["where"]["'${paramElement.name}'"] = paramElement.name;
         }
-        if (paramElement.metadata.first.toString().contains("@Query")) {
-          if (!params[paramElement.name]!.containsKey("query")) {
-            params[paramElement.name]?.addAll({ "query": {} });
+      }
+
+      if (element.metadata.first.toString().contains("@Post")) {
+        if (paramElement.metadata.first.toString().contains("@PostRequestModel")) {
+          if (!params[paramElement.name]!.containsKey("postRequestModel")) {
+            params[paramElement.name]?.addAll({ "postRequestModel": {} });
           }
-          params[paramElement.name]?["query"]["'${paramElement.name}'"] = paramElement.name;
+          params[paramElement.name]?["postRequestModel"]["'${paramElement.name}'"] = paramElement.name;
         }
+        if (paramElement.metadata.first.toString().contains("@WorkingFor")) {
+          if (!params[paramElement.name]!.containsKey("workingFor")) {
+            params[paramElement.name]?.addAll({ "workingFor": {} });
+          }
+          print("working fooooor: ${paramElement.declaration}");
+          params[paramElement.name]?["workingFor"] = '${paramElement.declaration}';
+        }
+      }
+
+      if (paramElement.metadata.first.toString().contains("@Path")) {
+        if (!params[paramElement.name]!.containsKey("path")) {
+          params[paramElement.name]?.addAll({ "path": "path" });
+        }
+      }
+      if (paramElement.metadata.first.toString().contains("@Query")) {
+        if (!params[paramElement.name]!.containsKey("query")) {
+          params[paramElement.name]?.addAll({ "query": {} });
+        }
+        params[paramElement.name]?["query"]["'${paramElement.name}'"] = paramElement.name;
       }
     });
     

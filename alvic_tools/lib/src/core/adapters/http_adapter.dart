@@ -1,24 +1,27 @@
-import 'package:alvic_tools/src/core/adapters/data_adapter.dart';
-import 'package:alvic_tools/src/core/adapters/http_get_options.dart';
-import 'package:alvic_tools/src/core/config/alvic_tools_config.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:alvic_tools/src/core/adapters/data_adapter.dart';
+import 'package:alvic_tools/src/core/adapters/http_options.dart';
+import 'package:alvic_tools/src/core/config/alvic_tools_config.dart';
 
 class HttpAdapter implements DataAdapter {
 
   @override
-  Future<List<Map<String, dynamic>>> get<T>(String path, covariant HttpGetOptions options) async {
+  Future<List<Map<String, dynamic>>> get<T>(String path, covariant HttpOptions options) async {
+    print('---- Dio [RequestType][Many]');
     var response = await _callInternalGet(path, options);
     List<Map<String, dynamic>> mapped = [];
     (response as Iterable).forEach((element) {
-      Map<String, dynamic> auxItem = element;
-      mapped.add(auxItem);
+      try {
+        Map<String, dynamic> auxItem = element;
+        mapped.add(auxItem);
+      } catch (e) {}
     });
     return mapped;
   }
 
   @override
-  Future<Map<String, dynamic>> getOne<T>(String path, covariant HttpGetOptions options) async {
+  Future<Map<String, dynamic>> getOne<T>(String path, covariant HttpOptions options) async {
     print('---- Dio [RequestType][Single]');
     var response = await _callInternalGet(path, options) as Map<String, dynamic>;
     Map<String, dynamic> auxItem = {};
@@ -30,39 +33,50 @@ class HttpAdapter implements DataAdapter {
     return auxItem;
   }
 
-  Future<dynamic> _callInternalGet(String path, HttpGetOptions options) async {
+  Future<dynamic> _callInternalGet(String path, HttpOptions options) async {
     AlvicToolsConfig config = GetIt.instance.get<AlvicToolsConfig>();
     Dio dio = GetIt.instance.get<Dio>();
     String url = config.baseUrl + path;
     if (options.paths.isNotEmpty) {
       url += options.paths;
     }
-    print("---- Dio [Url]: $url");
-    Response response = await dio.get(url, queryParameters: options.queries);
-    if (options.sourceKey.isNotEmpty) {
-      print("---- Dio [Response][SourceKey:${options.sourceKey}]: ${response.data[options.sourceKey]}");
-      return response.data[options.sourceKey];
+    Response response;
+    if (options.headers.isNotEmpty) {
+      response = await dio.get(url, queryParameters: options.queries, options: Options(
+        headers: options.headers
+      ));
+    } else {
+      response = await dio.get(url, queryParameters: options.queries);
     }
-    print("---- Dio [Response]: ${response.data}");
     return response.data;
   }
 
   @override
-  Future<T> remove<T>(T data) {
+  Future<bool> remove<T>(String path, covariant HttpOptions options) async {
     // TODO: implement remove
     throw UnimplementedError();
   }
 
   @override
-  Future<T> save<T>(T data) {
-    // TODO: implement save
-    throw UnimplementedError();
+  Future<bool> save(String path, List<Map<String, dynamic>> data, covariant HttpOptions options) async {
+    AlvicToolsConfig config = GetIt.instance.get<AlvicToolsConfig>();
+    Dio dio = GetIt.instance.get<Dio>();
+    String url = config.baseUrl + path;
+    if (options.headers.isNotEmpty) {
+      await dio.post(url, data: data.first, options: Options(headers: options.headers));
+      return true;
+    }
+    await dio.post(url, data: data.first);
+    return true;
   }
 
   @override
-  Future<T> update<T>(T data) {
-    // TODO: implement update
+  Future<bool> update<T>(String path, List<Map<String, dynamic>> data, covariant HttpOptions options) {
     throw UnimplementedError();
   }
-
+  
+  @override
+  Future<void> clear(String path) {
+    throw UnimplementedError();
+  }
 }
