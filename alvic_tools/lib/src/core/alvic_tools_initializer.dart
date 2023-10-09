@@ -8,11 +8,9 @@ import 'package:hive_flutter/hive_flutter.dart';
 class AlvicToolsInitializer {
   
   final AlvicToolsConfig config;
-  final void Function(GetIt instance) projectInjector;
 
   const AlvicToolsInitializer({
     required this.config,
-    required this.projectInjector
   });
 
   void init() async {
@@ -32,6 +30,6 @@ class AlvicToolsInitializer {
     GetIt.instance.registerSingleton<AlvicToolsConfig>(config);
     config.initConfig(GetIt.I.get<Dio>());
     GetIt.instance.registerSingleton<HttpAdapter>(HttpAdapter());
-    projectInjector(GetIt.I);
+    config.projectInjector(GetIt.I);
   }
 }
