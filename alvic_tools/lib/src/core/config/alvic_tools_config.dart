@@ -10,7 +10,7 @@ class AlvicToolsConfig {
   final Duration? connectTimeout;
   final Duration? receiveTimeout;
   final AlvicInterceptor? interceptor;
-  final void Function(GetIt instance) projectInjector;
+  final bool Function(GetIt instance) projectInjector;
 
   const AlvicToolsConfig({
     this.baseUrl = "",
