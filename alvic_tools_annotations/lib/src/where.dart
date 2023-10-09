@@ -1,0 +1,3 @@
+class Where {
+  const Where();
+}
