@@ -30,6 +30,8 @@ class AlvicToolsInitializer {
     GetIt.instance.registerSingleton<AlvicToolsConfig>(config);
     config.initConfig(GetIt.I.get<Dio>());
     GetIt.instance.registerSingleton<HttpAdapter>(HttpAdapter());
-    config.projectInjector(GetIt.I);
+    if (config.injector?.inject != null) {
+      config.injector?.inject!(GetIt.I);
+    }
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:core';
 
+import 'package:alvic_tools/alvic_tools.dart';
 import 'package:alvic_tools/src/core/config/alvic_interceptor.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
@@ -10,14 +11,14 @@ class AlvicToolsConfig {
   final Duration? connectTimeout;
   final Duration? receiveTimeout;
   final AlvicInterceptor? interceptor;
-  final bool Function(GetIt instance) projectInjector;
+  final AlvicInjector? injector;
 
   const AlvicToolsConfig({
     this.baseUrl = "",
     this.connectTimeout = const Duration(seconds: 5),
     this.receiveTimeout = const Duration(seconds: 3),
     this.interceptor = const AlvicInterceptor(),
-    required this.projectInjector
+    this.injector = const AlvicInjector()
   });
 
   BaseOptions getOptions() => BaseOptions(
