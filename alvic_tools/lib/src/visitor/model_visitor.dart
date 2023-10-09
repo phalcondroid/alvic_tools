@@ -68,7 +68,6 @@ class ModelVisitor extends SimpleElementVisitor<void> {
           if (!params[paramElement.name]!.containsKey("workingFor")) {
             params[paramElement.name]?.addAll({ "workingFor": {} });
           }
-          print("working fooooor: ${paramElement.declaration}");
           params[paramElement.name]?["workingFor"] = '${paramElement.declaration}';
         }
       }

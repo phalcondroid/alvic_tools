@@ -11,6 +11,7 @@ class HttpAdapter implements DataAdapter {
     print('---- Dio [RequestType][Many]');
     var response = await _callInternalGet(path, options);
     List<Map<String, dynamic>> mapped = [];
+    print('---- Dio [RequestType][Many][Raw] $response');
     (response as Iterable).forEach((element) {
       try {
         Map<String, dynamic> auxItem = element;
@@ -40,14 +41,18 @@ class HttpAdapter implements DataAdapter {
     if (options.paths.isNotEmpty) {
       url += options.paths;
     }
+    print('---- Dio [RequestType][Many][Url]; $url');
     Response response;
     if (options.headers.isNotEmpty) {
+      print('---- Dio [RequestType][Many][headers]; ${options}');
       response = await dio.get(url, queryParameters: options.queries, options: Options(
         headers: options.headers
       ));
     } else {
+      print('---- Dio [RequestType][Many][options]; ${options.queries}');
       response = await dio.get(url, queryParameters: options.queries);
     }
+    print('---- Dio [RequestType][Many][all]; ${response.data}');
     return response.data;
   }
 
@@ -60,10 +65,25 @@ class HttpAdapter implements DataAdapter {
   @override
   Future<bool> save(String path, List<Map<String, dynamic>> data, covariant HttpOptions options) async {
     AlvicToolsConfig config = GetIt.instance.get<AlvicToolsConfig>();
-    Dio dio = GetIt.instance.get<Dio>();
+    Dio dio = Dio();
     String url = config.baseUrl + path;
     if (options.headers.isNotEmpty) {
-      await dio.post(url, data: data.first, options: Options(headers: options.headers));
+      Map<String, dynamic> headers = {};
+      options.headers.forEach((key, value) {
+        if (value != null) {
+          headers[key] = value; 
+        }  
+      });
+      print('---- Dio [RequestType][POST][DATA]; ${data.first} - h: $headers');
+      await dio.post(
+        url, 
+        data: data.first, 
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: headers
+        )
+      );
+      print('---- Dio [RequestType][AFTER POST][DATA]; ${data.first} - h: $headers');
       return true;
     }
     await dio.post(url, data: data.first);

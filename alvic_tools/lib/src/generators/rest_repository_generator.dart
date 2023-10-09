@@ -79,7 +79,7 @@ class RestRepositoryGenerator extends GeneratorForAnnotation<RestRepository> {
     methodData["params"].forEach((key, Map<String, dynamic> value) {
       if ((value.containsKey("postRequestModel"))) {
         classBuffer.writeln(
-          "adapter.save('${methodData["url"]}', [ ${value["name"]}.toJson() ], HttpOptions(headers: {${headersAsMap.join(",")}}));"
+          "await adapter.save('${methodData["url"]}', [ ${value["name"]}.toJson() ], HttpOptions(headers: {${headersAsMap.join(",")}}));"
         );
         classBuffer.writeln("await localAdapter.clear('$modelName');");
       }

@@ -20,9 +20,7 @@ class AlvicToolsConfig {
   });
 
   BaseOptions getOptions() => BaseOptions(
-    baseUrl: baseUrl,
-    connectTimeout: connectTimeout,
-    receiveTimeout: receiveTimeout,
+   
   );
   
   void initConfig(Dio dio) {
@@ -31,8 +29,6 @@ class AlvicToolsConfig {
         if (interceptor?.before != null) {
           return handler.next(interceptor?.before!(options, handler) ?? options);
         }
-        options.data = <String, dynamic>{};
-        options.headers = <String, dynamic>{};
         return handler.next(options);
       },
       onResponse: (Response response, ResponseInterceptorHandler handler) {
@@ -48,6 +44,10 @@ class AlvicToolsConfig {
         return handler.next(e);
       },
     ));
-    dio.options = getOptions();
+    dio.options.copyWith(
+      baseUrl: baseUrl,
+      connectTimeout: connectTimeout,
+      receiveTimeout: receiveTimeout,
+    );
   }
 }

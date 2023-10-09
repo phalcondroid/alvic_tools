@@ -5,7 +5,6 @@ import 'package:get_it/get_it.dart';
 import 'package:alvic_tools/alvic_tools.dart';
 import 'package:alvic_tools/src/core/config/alvic_tools_config.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:path_provider/path_provider.dart';
 
 class AlvicToolsInitializer {
   
