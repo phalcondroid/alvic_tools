@@ -22,7 +22,7 @@ class LocalAdapter extends DataAdapter {
 
   @override
   Future<T> save<T>(T data) {
-    // TODO: implement save
+    
     throw UnimplementedError();
   }
 

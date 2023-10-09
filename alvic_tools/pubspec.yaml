@@ -16,6 +16,9 @@ dependencies:
   dio: ^5.3.3
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  path_provider:
+  alvic_tools_annotations: 
+    path: ../alvic_tools_annotations/
 
 dev_dependencies:
   lints: ^2.0.0

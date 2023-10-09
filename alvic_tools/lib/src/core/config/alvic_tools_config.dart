@@ -1,9 +1,7 @@
 import 'dart:core';
 
 import 'package:alvic_tools/alvic_tools.dart';
-import 'package:alvic_tools/src/core/config/alvic_interceptor.dart';
 import 'package:dio/dio.dart';
-import 'package:get_it/get_it.dart';
 
 class AlvicToolsConfig {
   

@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:alvic_tools/alvic_tools.dart';
 import 'package:alvic_tools/src/core/config/alvic_tools_config.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 
 class AlvicToolsInitializer {
   
@@ -15,17 +16,6 @@ class AlvicToolsInitializer {
 
   void init() async {
     print("initializing....");
-
-   // final appDocumentDirectory = await getApplicationDocumentsDirectory();
-    Hive.initFlutter();
-
-    var box = Hive.box('testBox');
-    box.put('name', 'David');
-
-    var name = box.get('name');
-
-    print('hiveeee Name: $name');
-    
     GetIt.instance.registerSingleton<Dio>(Dio());
     GetIt.instance.registerSingleton<AlvicToolsConfig>(config);
     config.initConfig(GetIt.I.get<Dio>());
@@ -33,5 +23,10 @@ class AlvicToolsInitializer {
     if (config.injector?.inject != null) {
       config.injector?.inject!(GetIt.I);
     }
+  }
+
+  void initHive() async {
+     final appDocumentDirectory = await getApplicationDocumentsDirectory();
+    Hive.initFlutter(appDocumentDirectory.path);
   }
 }
