@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:alvic_tools/src/core/adapters/data_adapter.dart';
 import 'package:alvic_tools/src/core/adapters/http_get_options.dart';
 import 'package:alvic_tools/src/core/config/alvic_tools_config.dart';
@@ -26,7 +24,7 @@ class HttpAdapter implements DataAdapter {
     Map<String, dynamic> auxItem = {};
     try {
       (response as Iterable).forEach((mapElement) {
-          auxItem.addAll(mapElement);
+        auxItem.addAll(mapElement);
       });
     } catch (e) {}
     return auxItem;
